@@ -25,9 +25,9 @@ model Song {
   name String
   lyric String?
   created_at DateTime
-  playlist_id String
+  playlist_id String?
 
-  playlist Playlist @relation(fields: [playlist_id], references: [id])
+  playlist Playlist? @relation(fields: [playlist_id], references: [id])
 
   @@map("songs")
 }

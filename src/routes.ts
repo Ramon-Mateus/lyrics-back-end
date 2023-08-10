@@ -76,20 +76,29 @@ export async function appRoutes(app: FastifyInstance) {
     app.post('/songs', async (request) => {
         const createPlaylistBody = z.object({
             name: z.string(),
-            playlist_id: z.string().uuid()
+            playlist_id: z.string().uuid().optional()
         })
 
-        const { name, playlist_id, } = createPlaylistBody.parse(request.body)
+        const { name, playlist_id } = createPlaylistBody.parse(request.body)
 
         const created_at = dayjs().startOf('day').toDate()  // retorna o dia com a hora zerada
 
-        await prisma.song.create({
-            data: {
-                name,
-                created_at,
-                playlist_id
-            }
-        })
+        if (playlist_id) {
+            await prisma.song.create({
+                data: {
+                    name,
+                    created_at,
+                    playlist_id
+                }
+            })
+        } else {
+            await prisma.song.create({
+                data: {
+                    name,
+                    created_at
+                }
+            })
+        }
     })
 
     app.delete('/songs/:id', async (request) => {
@@ -112,12 +121,6 @@ export async function appRoutes(app: FastifyInstance) {
         })
 
         const { id } = togglePlaylistParams.parse(request.query)
-        
-        await prisma.song.deleteMany({
-            where: {
-                playlist_id: id
-            }
-        })
 
         await prisma.playlist.delete({
             where: {
@@ -184,25 +187,36 @@ export async function appRoutes(app: FastifyInstance) {
         }
     })
 
-    app.put('/lyric/:songId', async (request) => {
+    app.put('/lyric/:id', async (request) => {
         const toggleLyricParams = z.object({
-            songId: z.string().uuid(),
+            id: z.string().uuid(),
         })
 
         const putLyricBody = z.object({
-            lyric: z.string()
+            lyric: z.string().optional()
         })
 
-        const { songId } = toggleLyricParams.parse(request.query)
+        const { id } = toggleLyricParams.parse(request.query)
         const { lyric } = putLyricBody.parse(request.body)
 
-        await prisma.song.update({
-            where: {
-                id: songId
-            },
-            data: {
-                lyric: lyric
-            }
-        })
+        if (lyric) {
+            await prisma.song.update({
+                where: {
+                    id: id
+                },
+                data: {
+                    lyric: lyric
+                }
+            })
+        } else {
+            await prisma.song.update({
+                where: {
+                    id: id
+                },
+                data: {
+                    lyric: null
+                }
+            })
+        }
     })
 }
