@@ -23,33 +23,11 @@ model Playlist {
 model Song {
   id   String @id @default(uuid())
   name String
+  lyric String
+  created_at DateTime
   playlist_id String
 
   playlist Playlist @relation(fields: [playlist_id], references: [id])
-  lyrics Lyric[]
 
   @@map("songs")
-}
-
-model Lyric {
-  id String @id @default(uuid())
-  line Int
-  text String
-  song_id String
-
-  song Song @relation(fields: [song_id], references: [id])
-  chords Chord[]
-
-  @@map("Lyrics")
-}
-
-model Chord {
-  id String @id @default(uuid())
-  note String
-  position Int
-  lyric_id String
-
-  lyric Lyric @relation(fields: [lyric_id], references: [id])
-
-  @@map("chords")
 }
