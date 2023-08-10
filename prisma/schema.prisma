@@ -23,7 +23,7 @@ model Playlist {
 model Song {
   id   String @id @default(uuid())
   name String
-  lyric String
+  lyric String?
   created_at DateTime
   playlist_id String
 

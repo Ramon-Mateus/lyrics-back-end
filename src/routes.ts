@@ -76,18 +76,16 @@ export async function appRoutes(app: FastifyInstance) {
     app.post('/songs', async (request) => {
         const createPlaylistBody = z.object({
             name: z.string(),
-            playlist_id: z.string().uuid(),
-            lyric: z.string()
+            playlist_id: z.string().uuid()
         })
 
-        const { name, playlist_id, lyric } = createPlaylistBody.parse(request.body)
+        const { name, playlist_id, } = createPlaylistBody.parse(request.body)
 
         const created_at = dayjs().startOf('day').toDate()  // retorna o dia com a hora zerada
 
         await prisma.song.create({
             data: {
                 name,
-                lyric,
                 created_at,
                 playlist_id
             }
@@ -157,13 +155,13 @@ export async function appRoutes(app: FastifyInstance) {
             id: z.string().uuid(),
         })
 
-        const createSongBody = z.object({
+        const putSongBody = z.object({
             name: z.string().optional(),
             playlist_id: z.string().uuid().optional()
         })
 
         const { id } = toggleSongParams.parse(request.query)
-        const { name, playlist_id } = createSongBody.parse(request.body)
+        const { name, playlist_id } = putSongBody.parse(request.body)
 
         if (playlist_id) {
             await prisma.song.update({
@@ -184,5 +182,27 @@ export async function appRoutes(app: FastifyInstance) {
                 }
             })
         }
+    })
+
+    app.put('/lyric/:songId', async (request) => {
+        const toggleLyricParams = z.object({
+            songId: z.string().uuid(),
+        })
+
+        const putLyricBody = z.object({
+            lyric: z.string()
+        })
+
+        const { songId } = toggleLyricParams.parse(request.query)
+        const { lyric } = putLyricBody.parse(request.body)
+
+        await prisma.song.update({
+            where: {
+                id: songId
+            },
+            data: {
+                lyric: lyric
+            }
+        })
     })
 }
