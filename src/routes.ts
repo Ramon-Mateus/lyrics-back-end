@@ -1,6 +1,7 @@
 import { FastifyInstance } from 'fastify';
 import { z } from 'zod'
 import { prisma } from './lib/prisma'
+import dayjs from 'dayjs';
 
 export async function appRoutes(app: FastifyInstance) {
 
@@ -75,14 +76,19 @@ export async function appRoutes(app: FastifyInstance) {
     app.post('/songs', async (request) => {
         const createPlaylistBody = z.object({
             name: z.string(),
-            playlist_id: z.string().uuid()
+            playlist_id: z.string().uuid(),
+            lyric: z.string()
         })
 
-        const { name, playlist_id } = createPlaylistBody.parse(request.body)
+        const { name, playlist_id, lyric } = createPlaylistBody.parse(request.body)
+
+        const created_at = dayjs().startOf('day').toDate()  // retorna o dia com a hora zerada
 
         await prisma.song.create({
             data: {
                 name,
+                lyric,
+                created_at,
                 playlist_id
             }
         })
