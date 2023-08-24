@@ -12,11 +12,17 @@
   "dependencies": {
     "@fastify/cors": "^8.3.0",
     "@prisma/client": "^4.16.1",
+    "crypto": "^1.0.1",
     "dayjs": "^1.11.9",
+    "express-list-endpoints": "^6.0.0",
     "fastify": "^4.18.0",
-    "zod": "^3.21.4"
+    "fastify-jwt": "^4.2.0",
+    "fastify-zod": "^1.4.0",
+    "zod": "^3.22.2",
+    "zod-to-json-schema": "^3.21.4"
   },
   "devDependencies": {
+    "@types/node": "^20.5.4",
     "prisma": "^4.16.1",
     "tsx": "^3.12.7",
     "typescript": "^5.1.3"
