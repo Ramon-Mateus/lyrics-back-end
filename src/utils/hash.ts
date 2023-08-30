@@ -11,18 +11,18 @@ export function hashPassword(password: string){
 }
 
 export function verifyPassword({
-  CandidatePassword, 
+  candidatePassword, 
   salt, 
   hash
   }: {
-  CandidatePassword: string, 
+  candidatePassword: string, 
   salt: string,
   hash:string
 
 }){
 
   const CandidateHash= crypto.pbkdf2Sync(
-    CandidatePassword, 
+    candidatePassword, 
     salt, 
     1000, 
     64, 

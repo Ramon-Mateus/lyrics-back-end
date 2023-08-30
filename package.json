@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@fastify/cors": "^8.3.0",
+    "@fastify/jwt": "^5.0.0",
     "@prisma/client": "^4.16.1",
     "crypto": "^1.0.1",
     "dayjs": "^1.11.9",
@@ -22,6 +23,7 @@
     "zod-to-json-schema": "^3.21.4"
   },
   "devDependencies": {
+    "@types/fastify-jwt": "^0.8.1",
     "@types/node": "^20.5.4",
     "prisma": "^4.16.1",
     "tsx": "^3.12.7",
