@@ -18,6 +18,7 @@ model User{
   email String @unique
   password String
   salt String
+  role String @default("user")
   // playlist Playlist[] #TODO: Apagar toda o banco de dados, descomentar essas linhas e fazer o migrate
 
 }
