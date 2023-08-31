@@ -1,9 +1,8 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { createUser, findUserByUsername, findUsers } from "./user.service";
-import { CreateUserInput, LoginInput } from "./user.schema";
+import { createUser, deleteUser, findUserByUsername, findUsers, isAdmin } from "./user.service";
+import { CreateUserInput, DeleteInput, LoginInput } from "./user.schema";
 import { verifyPassword } from "../../utils/hash";
 import {app} from "../../server"
-
 export async function registerUserHandler(
   request:FastifyRequest<{
     Body:CreateUserInput
@@ -29,7 +28,6 @@ export async function registerUserHandler(
     reply:FastifyReply
  ){
     const body = request.body
-
     //fin user by username 
     const user = await findUserByUsername(body.username) 
     if (!user){
@@ -49,7 +47,7 @@ export async function registerUserHandler(
       const {password,salt, ...rest}=user
 
       //generate access token
-      return { accessToken: request.jwt.sign(rest) };
+      return { "message":"Logado!", accessToken: app.jwt.sign(rest) };
     }
 
     return reply.code(401).send({
@@ -64,4 +62,32 @@ export async function registerUserHandler(
   const users = await findUsers()
 
   return users;
+ }
+
+ export async function deleteUserHandler(request:FastifyRequest<{
+    Body: DeleteInput
+ }>, 
+    reply:FastifyReply
+ ){
+      const body = request.body
+      const userRequest = request.user
+      console.log(request.user)
+      if(userRequest.role !=="admin"){
+        return reply.code(403).send({ message: 'Apenas os administradores têm permissão para excluir.' });
+
+      }
+      const user = await findUserByUsername(body.username)
+      if(!user) return reply.code(401).send({message: "O usuário não existe ou está incorreto"})
+      try{
+        const userDelete = await deleteUser(body.username)
+
+        return reply.code(200).send({
+          admin: userRequest.name,
+          message: "O usuário foi deletado!"
+        })
+      }catch(err){
+        console.log(err);
+        return reply.code(500).send(err)
+      }
+      
  }
