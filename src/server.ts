@@ -3,7 +3,7 @@ import cors from '@fastify/cors'
 import { appRoutes } from './routes'
 import userRoutes from "./modules/user/user.route";
 import { userSchemas } from "./modules/user/user.schema";
-import fjwt, { JWT } from "fastify-jwt";
+import fjwt, { JWT } from "@fastify/jwt";
 
 export const app = fastify();
 
@@ -18,7 +18,7 @@ app.register(cors)
 app.register(appRoutes)
 
 app.register(fjwt, {
-    secret: "ndkandnan78duy9sau87dbndsa89u7dsy789adb",
+    secret: "mysecret",
   });
 
   app.decorate(
