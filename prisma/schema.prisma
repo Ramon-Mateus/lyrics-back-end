@@ -10,13 +10,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User{
+  id Int  @id @default(autoincrement())
+  username String @unique
+  name String
+  //dob DateTime
+  email String @unique
+  password String
+  salt String
+  role String @default("user")
+  // playlist Playlist[] #TODO: Apagar toda o banco de dados, descomentar essas linhas e fazer o migrate
+
+}
+
 model Playlist {
   id          String @id @default(uuid())
   name        String
   description String
 
   songs Song[]
-
+  // owner User @relation( fields: [ownerId], references: [id])   
+  // ownerId Int
   @@map("playlists")
 }
 
