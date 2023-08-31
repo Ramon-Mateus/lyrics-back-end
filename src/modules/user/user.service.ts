@@ -1,6 +1,6 @@
 import { prisma } from "../../lib/prisma";
 import { hashPassword } from "../../utils/hash";
-import { CreateUserInput } from "./user.schema";
+import { CreateUserInput} from "./user.schema";
 
 export async function createUser(input:CreateUserInput) {
 
@@ -16,6 +16,14 @@ export async function createUser(input:CreateUserInput) {
   return user; 
 }
 
+export async function deleteUser(username:string){
+
+  return prisma.user.delete({
+    where:{
+      username,
+    }
+  })
+}
 
 export async function findUserByUsername(username:string){
   return prisma.user.findUnique({
@@ -24,7 +32,6 @@ export async function findUserByUsername(username:string){
     }
   })
 }
-
 
 export async function findUsers(){
   return prisma.user.findMany({

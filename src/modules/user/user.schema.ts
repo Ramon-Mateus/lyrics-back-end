@@ -24,10 +24,16 @@ const createUserSchema = z.object({
 
 const createUserResponseSchema = z.object({
   id: z.number(),
+  role: z.string(),
  ...UserCore,
 
 })
+const deleteUserSchema = z.object({
+  username:z.string({
+    required_error: 'Username is required',
 
+  }),
+})
 const loginSchema = z.object({
   username:z.string({
     required_error: 'Username is required',
@@ -43,11 +49,12 @@ const loginResponseSchema = z.object({
 export type CreateUserInput = z.infer <typeof createUserSchema>;
 
 export type LoginInput = z.infer <typeof loginSchema>;
+export type DeleteInput = z.infer <typeof deleteUserSchema>;
 
 export const {schemas:userSchemas, $ref} = buildJsonSchemas({
   createUserSchema,
   createUserResponseSchema,
   loginSchema,
-  loginResponseSchema
-
+  loginResponseSchema,
+  deleteUserSchema,
 })

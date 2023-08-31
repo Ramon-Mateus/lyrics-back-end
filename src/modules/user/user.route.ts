@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import { getUsersHandler, loginHandler, registerUserHandler } from "./user.controller";
+import { deleteUserHandler, getUsersHandler, loginHandler, registerUserHandler } from "./user.controller";
 import { $ref } from "./user.schema";
 
 async function userRoutes(server: FastifyInstance ) {
@@ -26,7 +26,10 @@ async function userRoutes(server: FastifyInstance ) {
 
   server.get('/',
   {preHandler: [server.authenticate]},
-   getUsersHandler)
+   getUsersHandler),
+  server.delete('/delete', 
+  {preHandler: [server.authenticate]}
+  ,deleteUserHandler)
 }
 
 export default userRoutes 
