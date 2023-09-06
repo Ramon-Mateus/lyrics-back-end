@@ -36,10 +36,11 @@ export async function findUserByUsername(username:string){
 export async function findUsers(){
   return prisma.user.findMany({
     select:{
-      email:true,
+      id:true,
       name:true,
       username:true,
-      id:true
+      role:true,
+      email:true,
     }
   })
 }
