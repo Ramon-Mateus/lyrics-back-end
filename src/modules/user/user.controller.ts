@@ -73,7 +73,7 @@ export async function registerUserHandler(
       const userRequest = request.user
       console.log(request.user)
       if(userRequest.role !=="admin"){
-        return reply.code(403).send({ message: 'Apenas os administradores têm permissão para excluir.' });
+        return reply.code(401).send({ message: 'Apenas os administradores têm permissão para excluir.' });
 
       }
       const user = await findUserByUsername(body.username)
