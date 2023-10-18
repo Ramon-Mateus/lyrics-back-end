@@ -166,25 +166,15 @@ export async function appRoutes(app: FastifyInstance) {
         const { id } = songParams.parse(request.params)
         const { name, playlist_id } = putSongBody.parse(request.body)
 
-        if (playlist_id) {
-            await prisma.song.update({
-                where: {
-                    id: id
-                },
-                data: {
-                    playlist_id: playlist_id
-                }
-            })
-        } else {
-            await prisma.song.update({
-                where: {
-                    id: id
-                },
-                data: {
-                    name: name
-                }
-            })
-        }
+        await prisma.song.update({
+            where: {
+                id: id
+            },
+            data: {
+                name: name,
+                playlist_id: playlist_id
+            }
+        })
     })
 
     app.put('/lyric/:id', async (request) => {
