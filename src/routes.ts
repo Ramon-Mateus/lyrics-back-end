@@ -121,7 +121,7 @@ export async function appRoutes(app: FastifyInstance) {
         })
 
         const { id } = playlistParams.parse(request.params)
-
+        
         await prisma.playlist.delete({
             where: {
                 id: id
