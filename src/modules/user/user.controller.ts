@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { createUser, deleteUser, findUserByUsername, findUsers, isAdmin } from "./user.service";
+import { createUser, deleteUser, findUserByUsername, findUsers } from "./user.service";
 import { CreateUserInput, DeleteInput, LoginInput } from "./user.schema";
 import { verifyPassword } from "../../utils/hash";
 import {app} from "../../server"
@@ -82,7 +82,7 @@ export async function registerUserHandler(
         const userDelete = await deleteUser(body.username)
 
         return reply.code(200).send({
-          admin: userRequest.name,
+          requestByAdmin: userRequest.name,
           message: "O usuário foi deletado!"
         })
       }catch(err){
